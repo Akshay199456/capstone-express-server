@@ -10,4 +10,16 @@ router.get('/', async(req, res) => {
 	});
 });
 
+
+router.post('/login', async(req, res) =>{
+	console.log("Login route hit");
+});
+
+
+router.post('/register', async(req, res) =>{
+	console.log('Register route hit!');
+	
+});
+
+
 module.exports = router;
