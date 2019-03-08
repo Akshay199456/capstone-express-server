@@ -26,8 +26,10 @@ app.use(cors(corsOptions));
 
 
 const authController = require('./controllers/authController');
+const resultController = require('./controllers/resultController');
 
 app.use('/api/v1/auth', authController);
+app.use('/api/v1/result', resultController);
 
 app.listen(9000, () => {
   console.log('listening on port 9000');
