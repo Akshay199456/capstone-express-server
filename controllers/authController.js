@@ -4,9 +4,8 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 
 // Logout route
-/*
 router.get('/logout', (req, res) => {
-	console.log("Logout req session: ",req.session);
+	console.log("Logout req session at beginning : ",req.session);
     req.session.destroy((err) => {
     	if(err){
     	  	res.status(400).json({
@@ -16,12 +15,14 @@ router.get('/logout', (req, res) => {
 
 	    else {
 	    	res.status(200).json({
-	    		success: 'logout successful'
+	    		success: 'Logout successful'
 	    	});
+
+	    	console.log("Req session after logout: ", req.session);
 	    }
 	});
 });
-*/
+
 
 router.get('/', async(req, res) => {
 	res.status(200).json({
