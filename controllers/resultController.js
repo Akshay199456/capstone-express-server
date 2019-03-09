@@ -27,5 +27,30 @@ router.get('/youtube/:query', async (req, res) =>{
 	});
 })
 
+
+router.get('/nytNews/:query', async (req, res) =>{
+	console.log("NYT News route hit!");
+	console.log('Query String: ', req.params.query);
+
+	request('https://api.nytimes.com/svc/search/v2/articlesearch.json?q='+req.params.query+'&api-key='+process.env.NYT_KEY, function (error, response, body) {
+	  // console.log('error:', error); // Print the error if one occurred
+	  // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+	  // console.log('body:', body); // Print the HTML for the Google homepage.);
+
+	  if(error === null){
+	  	res.status(200).json({
+			success: 'NYT News route hit!',
+			data: JSON.parse(body)
+		});
+	  }
+
+	  else{
+	  	res.status(400).json({
+	  		error: error
+	  	});
+	  }
+	});
+});
+
 module.exports = router;
 
