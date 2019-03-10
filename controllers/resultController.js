@@ -186,8 +186,32 @@ router.get('/youtubemusic/:query', async(req, res) => {
 	  	});
 	  }
 	});
+});
 
-	
+
+router.get('/lastfm/:query', async(req, res) => {
+	console.log(' LastFM API route hit!');
+	console.log('Query String: ', req.params.query);
+
+	request('http://ws.audioscrobbler.com/2.0/?method=track.search&track='+ req.params.query+'&api_key='+process.env.LAST_FM_API_KEY +'&format=json', function (error, response, body) {
+	  console.log('error:', error); // Print the error if one occurred
+	  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+	  console.log('body:', body); // Print the HTML for the Google homepage.);
+
+	  if(error === null){
+	  	res.status(200).json({
+			success: 'Last Fm route hit!',
+			data: JSON.parse(body)
+		});
+	  }
+
+	  else{
+	  	res.status(400).json({
+	  		error: error
+	  	});
+	  }
+	});
+
 });
 
 
