@@ -2,6 +2,17 @@ const express = require('express');
 const router = express.Router();
 const request = require('request');
 
+//  Tumblr authentication
+const tumblr = require('tumblr.js');
+const client = tumblr.createClient({
+  consumer_key: process.env.TUMBLR_CONSUMER_KEY,
+  consumer_secret: process.env.TUMBLR_CONSUMER_SECRET_KEY,
+  token: process.env.TUMBLR_TOKEN,
+  token_secret: process.env.TUMBLR_TOKEN_SECRET
+});
+
+
+
 router.get('/youtube/:query', async (req, res) =>{
 	// console.log("Youtube route hit");
 	// console.log("ID: ", req.params.query);
@@ -102,6 +113,52 @@ router.get('/techcrunch/:query', async (req, res) =>{
 	  		error: error
 	  	});
 	  }
+	});
+});
+
+
+router.get('/musixmatch/:query', async(req, res) =>{
+	console.log('MusixMatch API route hit!');
+	console.log('Query String: ', req.params.query);
+
+	request('https://api.musixmatch.com/ws/1.1/track.search?q='+req.params.query+'&apikey='+process.env.MUSIXMATCH_API, function (error, response, body) {
+	  console.log('error:', error); // Print the error if one occurred
+	  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+	  console.log('body:', body); // Print the HTML for the Google homepage.);
+
+	  if(error === null){
+	  	res.status(200).json({
+			success: 'MusixMatch route hit!',
+			data: JSON.parse(body)
+		});
+	  }
+
+	  else{
+	  	res.status(400).json({
+	  		error: error
+	  	});
+	  }
+	});
+});
+
+
+router.get('/tumblr/:query', async(req, res) => {
+	console.log(' Tumblr API route hit!');
+	console.log('Query String: ', req.params.query);
+
+	client.taggedPosts(req.params.query, function(err, data){
+		if(err){
+			res.status(400).json({
+	  			error: err
+	  		});
+		}
+
+		else{
+			res.status(200).json({
+				success: 'Tumblr route hit!',
+				data: data
+			});
+		}
 	});
 });
 
