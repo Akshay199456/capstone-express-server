@@ -164,6 +164,34 @@ router.get('/tumblr/:query', async(req, res) => {
 
 
 
+router.get('/youtubemusic/:query', async(req, res) => {
+	console.log(' YouTube Music API route hit!');
+	console.log('Query String: ', req.params.query);
+
+	request('https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q='+req.params.query+'&topicId=%2Fm%2F04rlf&key='+process.env.YOUTUBE_API_KEY, function (error, response, body) {
+	  // console.log('error:', error); // Print the error if one occurred
+	  // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+	  // console.log('body:', body); // Print the HTML for the Google homepage.);
+
+	  if(error === null){
+	  	res.status(200).json({
+			success: 'YouTube Music route hit!',
+			data: JSON.parse(body)
+		});
+	  }
+
+	  else{
+	  	res.status(400).json({
+	  		error: error
+	  	});
+	  }
+	});
+
+	
+});
+
+
+
 
 module.exports = router;
 
