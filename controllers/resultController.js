@@ -81,6 +81,32 @@ router.get('/newsApi/:query', async (req, res) =>{
 
 
 
+router.get('/techcrunch/:query', async (req, res) =>{
+	console.log("TechCrunch API route hit!");
+	console.log('Query String: ', req.params.query);
+
+	request('https://newsapi.org/v2/everything?q='+req.params.query+'&language=en&domains=techcrunch.com'+'&sortBy=publishedAt&apiKey='+process.env.NEWS_API_KEY, function (error, response, body) {
+	  // console.log('error:', error); // Print the error if one occurred
+	  // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+	  // console.log('body:', body); // Print the HTML for the Google homepage.);
+
+	  if(error === null){
+	  	res.status(200).json({
+			success: 'TechCrunch route hit!',
+			data: JSON.parse(body)
+		});
+	  }
+
+	  else{
+	  	res.status(400).json({
+	  		error: error
+	  	});
+	  }
+	});
+});
+
+
+
 
 module.exports = router;
 
