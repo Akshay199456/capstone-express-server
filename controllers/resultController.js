@@ -154,9 +154,24 @@ router.get('/tumblr/:query', async(req, res) => {
 		}
 
 		else{
-			res.status(200).json({
-				success: 'Tumblr route hit!',
-				data: data
+			client.blogInfo(req.params.query, function(error, blogInfo){
+				if(error){
+					res.status(200).json({
+			  			success: 'Tumblr route hit!',
+						data: data,
+						blogCount: 20
+			  		});
+				}
+
+				else{
+					console.log('Data about blog: ', blogInfo);
+					res.status(200).json({
+						success: 'Tumblr route hit!',
+						data: data,
+						blogCount: -1,
+						blogInfo: blogInfo
+					});
+				}
 			});
 		}
 	});
