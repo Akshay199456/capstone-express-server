@@ -286,6 +286,55 @@ router.get('/popular/newsapi/:query', async(req, res) =>{
 
 
 
+router.get('/trending/techcrunch', async(req, res) =>{
+	console.log("Trending TechCrunch route");
+
+	request('https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey='+process.env.NEWS_API_KEY, function (error, response, body) {
+	  // console.log('error:', error); // Print the error if one occurred
+	  // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+	  // console.log('body:', body); // Print the HTML for the Google homepage.);
+
+	  if(error === null){
+	  	res.status(200).json({
+			success: 'Trending TechCrunch route hit!',
+			data: JSON.parse(body)
+		});
+	  }
+
+	  else{
+	  	res.status(400).json({
+	  		error: error
+	  	});
+	  }
+	});
+});
+
+
+
+router.get('/popular/techcrunch', async(req, res) =>{
+	console.log("Popular TechCrunch route");
+	request('https://newsapi.org/v2/everything?sources=techcrunch&sortBy=popularity&apiKey='+process.env.NEWS_API_KEY, function (error, response, body) {
+	  // console.log('error:', error); // Print the error if one occurred
+	  // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+	  // console.log('body:', body); // Print the HTML for the Google homepage.);
+
+	  if(error === null){
+	  	res.status(200).json({
+			success: 'Popular TechCrunch route hit!',
+			data: JSON.parse(body)
+		});
+	  }
+
+	  else{
+	  	res.status(400).json({
+	  		error: error
+	  	});
+	  }
+	});
+});
+
+
+
 
 
 
