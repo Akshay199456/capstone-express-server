@@ -234,6 +234,8 @@ router.get('/lastfm/:query', async(req, res) => {
 
 
 // Queries to fetch Trending/ Top Headlines from each platform
+
+// A. News API
 router.get('/trending/newsapi', async(req, res) =>{
 	console.log("Trending News API route");
 
@@ -256,10 +258,6 @@ router.get('/trending/newsapi', async(req, res) =>{
 	  }
 	});
 });
-
-// Most popular from techcrunch 
-// https://newsapi.org/v2/everything?q='+req.params.query'&sortBy=popularity&sources=techcrunch&apiKey=f1f0802302a64b429f4bc51fc83795f1
-
 
 router.get('/popular/newsapi/:query', async(req, res) =>{
 	console.log("Popular News API route");
@@ -286,6 +284,7 @@ router.get('/popular/newsapi/:query', async(req, res) =>{
 
 
 
+// B. TechCrunch
 router.get('/trending/techcrunch', async(req, res) =>{
 	console.log("Trending TechCrunch route");
 
@@ -332,6 +331,57 @@ router.get('/popular/techcrunch', async(req, res) =>{
 	  }
 	});
 });
+
+
+// C. NYT
+router.get('/trending/nyt', async(req, res) =>{
+	console.log("Trending NYT route");
+
+	request('https://newsapi.org/v2/top-headlines?sources=the-new-york-times&apiKey='+process.env.NEWS_API_KEY, function (error, response, body) {
+	  // console.log('error:', error); // Print the error if one occurred
+	  // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+	  // console.log('body:', body); // Print the HTML for the Google homepage.);
+
+	  if(error === null){
+	  	res.status(200).json({
+			success: 'Trending NYT route hit!',
+			data: JSON.parse(body)
+		});
+	  }
+
+	  else{
+	  	res.status(400).json({
+	  		error: error
+	  	});
+	  }
+	});
+});
+
+
+
+router.get('/popular/nyt', async(req, res) =>{
+	console.log("Popular NYT route");
+	request('https://newsapi.org/v2/everything?sources=the-new-york-times&sortBy=popularity&apiKey='+process.env.NEWS_API_KEY, function (error, response, body) {
+	  // console.log('error:', error); // Print the error if one occurred
+	  // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+	  // console.log('body:', body); // Print the HTML for the Google homepage.);
+
+	  if(error === null){
+	  	res.status(200).json({
+			success: 'Popular NYT route hit!',
+			data: JSON.parse(body)
+		});
+	  }
+
+	  else{
+	  	res.status(400).json({
+	  		error: error
+	  	});
+	  }
+	});
+});
+
+
 
 
 
