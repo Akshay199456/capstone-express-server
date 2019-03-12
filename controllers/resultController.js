@@ -431,9 +431,53 @@ router.get('/topartists/lastfm', async(req, res) =>{
 	});
 });
 
+// E. YouTube
 
+router.get('/trending/youtube', async (req, res) =>{
+	console.log("Youtube Trending route hit");
+	request('https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=10&key='+process.env.YOUTUBE_API_KEY, function (error, response, body) {
+	  // console.log('error:', error); // Print the error if one occurred
+	  // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+	  // console.log('body:', body); // Print the HTML for the Google homepage.
+	  if(error === null){
+	  	res.status(200).json({
+			success: 'YouTube Trending route hit!',
+			data: JSON.parse(body)
+		});
+	  }
 
+	  else{
+	  	res.status(400).json({
+	  		error: error
+	  	});
+	  }
 
+	});
+})
+
+// F. YouTube Music
+
+router.get('/trending/youtubemusic', async (req, res) =>{
+	console.log("Youtube Music Trending route hit");
+	request('https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=10&videoCategoryId=10&key='+process.env.YOUTUBE_API_KEY, function (error, response, body) {
+	  // console.log('error:', error); // Print the error if one occurred
+	  // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+	  // console.log('body:', body); // Print the HTML for the Google homepage.
+	  if(error === null){
+	  	res.status(200).json({
+			success: 'YouTube Music Trending route hit!',
+			data: JSON.parse(body)
+		});
+	  }
+
+	  else{
+	  	res.status(400).json({
+	  		error: error
+	  	});
+	  }
+
+	});
+})
 
 
 
