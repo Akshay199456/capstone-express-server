@@ -382,6 +382,55 @@ router.get('/popular/nyt', async(req, res) =>{
 });
 
 
+// D. Last.fm
+
+router.get('/toptracks/lastfm', async(req, res) =>{
+	console.log("Top Tracks Last.fm route");
+
+	request('http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&limit=20&api_key='+process.env.LAST_FM_API_KEY+'&format=json', function (error, response, body) {
+	  // console.log('error:', error); // Print the error if one occurred
+	  // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+	  // console.log('body:', body); // Print the HTML for the Google homepage.);
+
+	  if(error === null){
+	  	res.status(200).json({
+			success: 'Top Tracks Last Fm route hit!',
+			data: JSON.parse(body)
+		});
+	  }
+
+	  else{
+	  	res.status(400).json({
+	  		error: error
+	  	});
+	  }
+	});
+});
+
+
+
+router.get('/topartists/lastfm', async(req, res) =>{
+	console.log("Top Artists Last.fm route");
+	request('http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&limit=15&api_key='+process.env.LAST_FM_API_KEY+'&format=json', function (error, response, body) {
+	  // console.log('error:', error); // Print the error if one occurred
+	  // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+	  // console.log('body:', body); // Print the HTML for the Google homepage.);
+
+	  if(error === null){
+	  	res.status(200).json({
+			success: 'Top Artists Last Fm route hit!',
+			data: JSON.parse(body)
+		});
+	  }
+
+	  else{
+	  	res.status(400).json({
+	  		error: error
+	  	});
+	  }
+	});
+});
+
 
 
 
