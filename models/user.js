@@ -7,7 +7,10 @@ userSchema.add({
   username: {
   	type: String
   },
-  password: String,
+  password: {
+    type: String,
+    select: false
+  },
   email: {
   	type:String,
   	unique: true

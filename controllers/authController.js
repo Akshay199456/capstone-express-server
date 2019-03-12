@@ -9,7 +9,7 @@ router.get('/logout', (req, res) => {
     req.session.destroy((err) => {
     	if(err){
     	  	res.status(400).json({
-      			error: err
+      			error: 'error in logout'
       		});
     	}
 
@@ -26,7 +26,8 @@ router.get('/logout', (req, res) => {
 
 router.get('/', async(req, res) => {
 	res.status(200).json({
-		message: 'sending data'
+		message: 'sending data',
+		session: req.session
 	});
 });
 
@@ -45,8 +46,10 @@ router.post('/login', async(req, res) =>{
 		}
 		else{
 			console.log("User count: ", foundCount);
-			const foundUser = await User.findOne({ email: req.body.email})
+			const foundUser = await User.findOne({ email: req.body.email}).select('+password');
+			console.log('Found User: ', foundUser);
 			if (bcrypt.compareSync(req.body.password, foundUser.password)){
+				console.log('We getting inside!');
 
 				req.session.logged = true;
 			    req.session.email = foundUser.email;
@@ -74,7 +77,7 @@ router.post('/login', async(req, res) =>{
 	catch(err){
 		console.log(err);
 		res.status(400).json({
-		    error: err
+		    error: 'Error error panic deer!'
 		});
 	}
 });
