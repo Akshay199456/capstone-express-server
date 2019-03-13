@@ -1,6 +1,6 @@
 const express = require('express');
 const router  = express.Router();
-
+const bcrypt = require('bcryptjs');
 const User = require("../models/user");
 
 // USER INDEX
@@ -51,10 +51,29 @@ router.get('/show/:id', async (req, res) => {
 
 
 // USER UPDATE
+
 router.put('/:id', (req, res) => {
-  User.findByIdAndUpdate(req.params.id, req.body, { new: true }, (err, updatedUser) => {
-    if (err) res.json(err);
-    res.json(updatedUser);
+  console.log("Hitting user update route!");
+  console.log('Req body: ', req.body);
+  console.log('Id of user to be updated', req.params.id);
+
+  const userObject = {};
+  userObject.username = req.body.username;
+
+  const hashedPassword = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+  userObject.password = hashedPassword;
+
+  console.log('User Object: ', userObject);
+
+  User.findByIdAndUpdate(req.params.id, userObject, { new: true }, (err, updatedUser) => {
+    if (err) {
+      res.status(400).json(err);
+    }
+    else{
+      res.status(200).json({
+        success: 'User Successfully updated!',
+        user: updatedUser});
+    }
   });
 });
 
